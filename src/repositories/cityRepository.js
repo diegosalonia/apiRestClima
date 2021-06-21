@@ -1,5 +1,13 @@
 const { default: axios } = require('axios');
 const config = require('../config')
+const logger = require('../loaders/logger');
+axios.interceptors.request.use(function (config) {
+    logger.info(config);
+    return config;
+}, function (error) {
+    logger.info(error);
+    return Promise.reject(error);
+});
 
 
 class CityRepository {
@@ -23,7 +31,7 @@ class CityRepository {
             const response = await instance.get();
             return response.data;            
         } catch (error) {
-            throw error
+            throw(error)
         }
     }
 }
